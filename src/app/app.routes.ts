@@ -3,10 +3,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { TemplatesComponent } from './components/templates/templates.component';
 import { SelectivePreloadingStrategyService } from './services';
+import { Bug624Component } from './bug-624/bug-624.component';
 
 const routes: Routes = [{
     component: HomeComponent,
     path: '',
+  }, {
+  // TODO: remove when bug fixed
+  component: Bug624Component,
+  path: 'bug-624',
   }, {
     component: TemplatesComponent,
     path: 'templates',

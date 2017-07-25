@@ -1,0 +1,7 @@
+.create-elements {
+  td-dynamic-element {
+    // Override hard coded flex="45"
+    flex: auto !important;
+  }
+
+}

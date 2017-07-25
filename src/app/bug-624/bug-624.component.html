@@ -1,0 +1,132 @@
+<md-card>
+  <md-card-title>Dynamic Forms - Bug 624</md-card-title>
+  <md-card-subtitle>Change Elements at runtime</md-card-subtitle>
+  <md-divider></md-divider>
+  <md-card-content>
+    <div class="push-bottom-md">
+      <div><strong>Preview</strong></div>
+      <div>
+
+        <td-dynamic-forms
+          [elements]="addedElements"
+          #tdFormAddedElements>
+        </td-dynamic-forms>
+
+      </div>
+      <md-divider></md-divider>
+    </div>
+
+    <div class="push-bottom-md">
+      <div><strong>Model Value</strong></div>
+
+      <div>
+        {{ tdFormAddedElements.value | json }}
+      </div>
+
+      <div>
+        Is Valid: {{ tdFormAddedElements.valid }}
+      </div>
+      <md-divider></md-divider>
+    </div>
+
+    <div class="push-bottom-md">
+      <div><strong>Errors</strong></div>
+      <div>
+        {{ tdFormAddedElements.errors | json }}
+      </div>
+      <md-divider></md-divider>
+
+    </div>
+
+    <div><strong>Add Field</strong></div>
+
+    <md-list class="create-elements">
+      <ng-template let-model let-last="last" let-index="index" ngFor [ngForOf]="createFieldModel">
+        <md-list-item>
+          <form class="create-form">
+            <div layout="row" layout-align="space-between center">
+
+              <md-input-container>
+                <input mdInput placeholder="Name"
+                       [(ngModel)]="model.name" name="name">
+              </md-input-container>
+
+              <md-input-container>
+                <input mdInput placeholder="Label"
+                       [(ngModel)]="model.label" name="label">
+              </md-input-container>
+
+              <md-select placeholder="Type" [(ngModel)]="model.type" name="type">
+                <md-option *ngFor="let option of elementOptions" [value]="option">
+                  {{ option }}
+                </md-option>
+              </md-select>
+
+              <md-checkbox [(ngModel)]="model.required" name="required">Required</md-checkbox>
+
+              <!-- Trailing Menu -->
+              <div>
+                <button md-icon-button [md-menu-trigger-for]="menu" class="push-md">
+                  <md-icon>more_vert</md-icon>
+                </button>
+                <md-menu x-position="before" #menu="mdMenu">
+                  <button md-menu-item title="Add field" (click)="createElement(model)">
+                    <md-icon>add</md-icon>
+                    <span>Add</span>
+                  </button>
+                  <button md-menu-item title="Edit field" (click)="updateElment(index, model)">
+                    <md-icon>edit</md-icon>
+                    <span>Update</span>
+                  </button>
+                  <button md-menu-item title="Delete field" (click)="deleteElment(index)">
+                    <md-icon>delete</md-icon>
+                    <span>Delete</span>
+                  </button>
+                </md-menu>
+              </div>
+            </div>
+
+            <!-- Add select options -->
+            <div class="push-left-md" layout="row" layout-align="start start" *ngIf="model.type === 'select' || model.type === 'array'">
+              <div>
+                <md-input-container>
+                  <input mdInput placeholder="add option"
+                         [(ngModel)]="model.selectionToAdd" name="addSelection">
+                </md-input-container>
+                <button class="add-option-button" title="Add Option" (click)="addSelection(model)">
+                  <md-icon>add</md-icon>
+                </button>
+              </div>
+              <div class="push-left-md">
+                <ng-template let-option let-lastOption="last" ngFor [ngForOf]="model.selections">
+                  <span>{{ option }}</span>
+                  <span *ngIf="option && !lastOption">, </span>
+                </ng-template>
+              </div>
+            </div>
+
+            <!-- Min and Max Validators -->
+            <div class="push-left-md" layout="row" layout-align="start start"
+                 *ngIf="model.type === 'number' || model.type === 'slider'">
+              <div>
+                <md-input-container>
+                  <input mdInput placeholder="Min"
+                         [(ngModel)]="model.min" name="addSelection">
+                </md-input-container>
+              </div>
+              <div>
+                <md-input-container>
+                  <input mdInput placeholder="Max"
+                         [(ngModel)]="model.max" name="addSelection">
+                </md-input-container>
+              </div>
+            </div>
+          </form>
+          <md-divider></md-divider>
+        </md-list-item>
+      </ng-template>
+    </md-list>
+
+
+  </md-card-content>
+</md-card>
